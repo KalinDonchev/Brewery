@@ -7,6 +7,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.ConstraintViolationException;
+import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -25,7 +29,7 @@ public class CustomerController {
     }
 
     @PostMapping
-    public ResponseEntity<CustomerDto> createCustomer(@RequestBody CustomerDto customer) {
+    public ResponseEntity<CustomerDto> createCustomer(@Valid @RequestBody CustomerDto customer) {
         CustomerDto customerDto = customerService.createNewCustomer(customer);
 
         HttpHeaders headers = new HttpHeaders();
@@ -36,7 +40,7 @@ public class CustomerController {
 
     // It can be done with ResponseStatus here too
     @PutMapping("/{customerId}")
-    public ResponseEntity updateCustomer(@PathVariable("customerId") UUID customerId, @RequestBody CustomerDto customerDto){
+    public ResponseEntity updateCustomer(@PathVariable("customerId") UUID customerId,@Valid @RequestBody CustomerDto customerDto){
         customerService.updateCustomer(customerId,customerDto);
 
         return new ResponseEntity(HttpStatus.NO_CONTENT);
